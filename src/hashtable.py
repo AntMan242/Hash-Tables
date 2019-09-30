@@ -51,11 +51,25 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+        print(index)
+        node = self.storage[index]
+        print(node)
+        last_node = None
+
+        while node is not None and node.key != key:
+            last_node = node 
+            node = last_node.next
+        if node is not None:
+            node.value = value
+        else:
+            new_node = LinkedPair(key, value)
+            new_node.next = self.storage[index]
+            self.storage[index] = new_node
+        
 
 
-
-    def remove(self, key):
+    def remove(self, key): 
         '''
         Remove the value stored with the given key.
 
@@ -63,7 +77,19 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+        node = self.storage[index]
+        last_node = None
+        while node is not None and node.key != key:
+            last_node = node
+            node = last_node.next
+        if node is None:
+            print('Error: Unable to remove entry with key' + key)
+        else:
+            if last_node is None:
+                self.storage[index] = node.next
+            else:
+                last_node.next = node.next
 
 
     def retrieve(self, key):
@@ -74,7 +100,13 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+        node = self.storage[index]
+
+        while node is not None:
+            if node.key == key:
+                return node.value
+            node = node.next
 
 
     def resize(self):
@@ -84,9 +116,6 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
-
-
 
 if __name__ == "__main__":
     ht = HashTable(2)
