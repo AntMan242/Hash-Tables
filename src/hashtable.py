@@ -23,6 +23,7 @@ class HashTable:
 
         You may replace the Python hash with DJB2 as a stretch goal.
         '''
+        
         return hash(key)
 
 
@@ -57,11 +58,11 @@ class HashTable:
         print(node)
         last_node = None
 
-        while node is not None and node.key != key:
+        while node is not None and node.key != key: #checking if key is in sotrage
             last_node = node 
             node = last_node.next
         if node is not None:
-            node.value = value
+            node.value = value #put the value in storage
         else:
             new_node = LinkedPair(key, value)
             new_node.next = self.storage[index]
@@ -80,7 +81,7 @@ class HashTable:
         index = self._hash_mod(key)
         node = self.storage[index]
         last_node = None
-        while node is not None and node.key != key:
+        while node is not None and node.key != key: #looking for the key
             last_node = node
             node = last_node.next
         if node is None:
@@ -116,6 +117,16 @@ class HashTable:
 
         Fill this in.
         '''
+        old_storage = self.storage
+        self.capacity *= 2
+        self.storage = [None] * self.capacity
+        node = None
+        for bucket_item in old_storage:
+            node = bucket_item
+            while node is not None:
+                self.insert(node.key, node.value)
+                node = node.next
+
 
 if __name__ == "__main__":
     ht = HashTable(2)
@@ -130,6 +141,7 @@ if __name__ == "__main__":
     print(ht.retrieve("line_1"))
     print(ht.retrieve("line_2"))
     print(ht.retrieve("line_3"))
+
 
     # Test resizing
     old_capacity = len(ht.storage)
